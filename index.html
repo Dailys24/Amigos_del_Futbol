@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Liga Futbolito — Estadísticas y Finanzas</title>
+  <title>Liga Futbolito — Estadísticas e Historial</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -13,18 +13,17 @@
       background-color: #09090b;
       color: #f4f4f5;
     }
-    /* Scrollbar sutil en tablas */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: #18181b; }
     ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 3px; }
     ::-webkit-scrollbar-thumb:hover { background: #52525b; }
   </style>
 </head>
-<body class="min-h-screen antialiased selection:bg-emerald-500/30 selection:text-emerald-200">
+<body class="min-h-screen antialiased selection:bg-emerald-500/30 selection:text-emerald-200 flex flex-col">
 
   <!-- HEADER -->
-  <header class="border-b border-zinc-800/80 bg-zinc-950/80 backdrop-blur-md sticky top-0 z-30">
-    <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+  <header class="border-b border-zinc-800/80 bg-zinc-950/85 backdrop-blur-md sticky top-0 z-30">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
       <div>
         <div class="flex items-center gap-2.5">
           <span class="inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500 shadow-[0_0_10px_#10b981]"></span>
@@ -35,27 +34,39 @@
         <p id="header-subtitle" class="text-xs sm:text-sm text-zinc-400 mt-0.5"></p>
       </div>
 
-      <!-- Buscador global -->
-      <div class="relative w-full sm:w-64">
-        <input
-          id="search-input"
-          type="text"
-          placeholder="Buscar jugador..."
-          class="w-full bg-zinc-900 border border-zinc-800 rounded-lg pl-9 pr-3 py-2 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-emerald-500/70 focus:ring-1 focus:ring-emerald-500/50 transition"
-        />
-        <svg class="w-4 h-4 text-zinc-500 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1010.5 18a7.5 7.5 0 006.15-3.35z" />
-        </svg>
+      <!-- Controles: Selector de Año + Buscador -->
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+        <div class="flex items-center gap-2 bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-1.5">
+          <label for="season-select" class="text-xs font-semibold uppercase tracking-wider text-zinc-400 whitespace-nowrap">
+            Año:
+          </label>
+          <select
+            id="season-select"
+            class="bg-transparent text-sm font-bold text-emerald-400 focus:outline-none cursor-pointer w-full sm:w-auto"
+          ></select>
+        </div>
+
+        <div class="relative w-full sm:w-64">
+          <input
+            id="search-input"
+            type="text"
+            placeholder="Buscar jugador..."
+            class="w-full bg-zinc-900 border border-zinc-800 rounded-lg pl-9 pr-3 py-2 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-emerald-500/70 focus:ring-1 focus:ring-emerald-500/50 transition"
+          />
+          <svg class="w-4 h-4 text-zinc-500 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1010.5 18a7.5 7.5 0 006.15-3.35z" />
+          </svg>
+        </div>
       </div>
     </div>
   </header>
 
-  <main class="max-w-6xl mx-auto px-4 py-6 space-y-6">
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="max-w-6xl w-full mx-auto px-4 py-6 space-y-6 flex-1">
 
-    <!-- TARJETAS DE LÍDERES (CALCULADAS AUTOMÁTICAMENTE) -->
+    <!-- TARJETAS DE LÍDERES -->
     <section class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <!-- Mejor Goleador -->
-      <div class="bg-zinc-900/70 border border-zinc-800 rounded-xl p-4 relative overflow-hidden">
+      <div class="bg-zinc-900/70 border border-zinc-800 rounded-xl p-4">
         <div class="flex items-center justify-between">
           <span class="text-xs font-semibold uppercase tracking-wider text-zinc-400">Mejor Goleador</span>
           <span class="text-lg">⚽</span>
@@ -64,8 +75,7 @@
         <div id="leader-scorer-stat" class="text-sm font-medium text-emerald-400 mt-0.5">—</div>
       </div>
 
-      <!-- Mejor Arquero -->
-      <div class="bg-zinc-900/70 border border-zinc-800 rounded-xl p-4 relative overflow-hidden">
+      <div class="bg-zinc-900/70 border border-zinc-800 rounded-xl p-4">
         <div class="flex items-center justify-between">
           <span class="text-xs font-semibold uppercase tracking-wider text-zinc-400">Mejor Arquero</span>
           <span class="text-lg">🧤</span>
@@ -74,8 +84,7 @@
         <div id="leader-gk-stat" class="text-sm font-medium text-sky-400 mt-0.5">—</div>
       </div>
 
-      <!-- Mejor Viejo Crack -->
-      <div class="bg-zinc-900/70 border border-zinc-800 rounded-xl p-4 relative overflow-hidden">
+      <div class="bg-zinc-900/70 border border-zinc-800 rounded-xl p-4">
         <div class="flex items-center justify-between">
           <span class="text-xs font-semibold uppercase tracking-wider text-zinc-400">Mejor Viejo Crack</span>
           <span class="text-lg">🎖️</span>
@@ -85,23 +94,23 @@
       </div>
     </section>
 
-    <!-- NAVEGACIÓN DE PESTAÑAS -->
-    <nav class="flex flex-wrap gap-2 border-b border-zinc-800 pb-3" id="tabs">
-      <button data-tab="goleadores" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 transition">
+    <!-- NAVEGACIÓN DE PESTAÑAS (CON SCROLL HORIZONTAL EN MÓVIL) -->
+    <nav class="flex gap-2 overflow-x-auto pb-2 border-b border-zinc-800" id="tabs">
+      <button data-tab="goleadores" class="tab-btn shrink-0 px-4 py-2 rounded-lg text-sm font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 transition">
         ⚽ Goleadores
       </button>
-      <button data-tab="arqueros" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold bg-zinc-900 text-zinc-400 border border-zinc-800 hover:text-zinc-200 transition">
+      <button data-tab="arqueros" class="tab-btn shrink-0 px-4 py-2 rounded-lg text-sm font-semibold bg-zinc-900 text-zinc-400 border border-zinc-800 hover:text-zinc-200 transition">
         🧤 Arqueros
       </button>
-      <button data-tab="viejosCrack" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold bg-zinc-900 text-zinc-400 border border-zinc-800 hover:text-zinc-200 transition">
+      <button data-tab="viejosCrack" class="tab-btn shrink-0 px-4 py-2 rounded-lg text-sm font-semibold bg-zinc-900 text-zinc-400 border border-zinc-800 hover:text-zinc-200 transition">
         🎖️ Viejos Crack
       </button>
-      <button data-tab="finanzas" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold bg-zinc-900 text-zinc-400 border border-zinc-800 hover:text-zinc-200 transition">
+      <button data-tab="finanzas" class="tab-btn shrink-0 px-4 py-2 rounded-lg text-sm font-semibold bg-zinc-900 text-zinc-400 border border-zinc-800 hover:text-zinc-200 transition">
         💰 Finanzas y Cancha
       </button>
     </nav>
 
-    <!-- CONTENIDO DE TABLAS -->
+    <!-- TABLA ACTIVA -->
     <section class="bg-zinc-900/50 border border-zinc-800 rounded-xl overflow-hidden shadow-xl">
       <div id="table-info" class="px-4 py-3 bg-zinc-900/90 border-b border-zinc-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs text-zinc-400">
         <span id="table-formula"></span>
@@ -109,7 +118,7 @@
       </div>
 
       <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse">
+        <table class="w-full text-left border-collapse min-w-[480px]">
           <thead id="table-head" class="bg-zinc-950/70 text-xs uppercase tracking-wider text-zinc-400 border-b border-zinc-800"></thead>
           <tbody id="table-body" class="divide-y divide-zinc-800/60 text-sm"></tbody>
         </table>
@@ -118,360 +127,14 @@
 
   </main>
 
-  <footer class="max-w-6xl mx-auto px-4 py-6 text-center text-xs text-zinc-600">
-    Dashboard Oficial del Grupo • Actualizado por Fecha
+  <footer class="max-w-6xl w-full mx-auto px-4 py-6 text-center text-xs text-zinc-600">
+    Historial de Temporadas • Liga Futbolito
   </footer>
 
-  <script>
-    // =========================================================================
-    // 📦 ZONA DE DATOS — SOLO EDITA ESTA SECCIÓN EN CADA NUEVA FECHA
-    // =========================================================================
-    const DASHBOARD_DATA = {
-      tituloFecha: "Fecha 55 • Equipo Negro vs. Equipo ROJO",
+  <!-- ARCHIVOS DE DATOS POR AÑO (AGREGA AQUÍ 2027.js, 2028.js, ETC.) -->
+  <script src="data/2026.js"></script>
 
-      goleadores: [
-        { nombre: "Angelo G", pj: 30, goles: 127 },
-        { nombre: "Jorge", pj: 29, goles: 89 },
-        { nombre: "Máximo V", pj: 18, goles: 78 },
-        { nombre: "Willy", pj: 20, goles: 57 },
-        { nombre: "Cristian", pj: 29, goles: 56 },
-        { nombre: "Juan", pj: 25, goles: 51 },
-        { nombre: "Miguel", pj: 34, goles: 44 },
-        { nombre: "Nico VA", pj: 16, goles: 42 },
-        { nombre: "Ivan", pj: 26, goles: 37 },
-        { nombre: "Christian dad", pj: 21, goles: 34 },
-        { nombre: "Seba L", pj: 29, goles: 33 },
-        { nombre: "James", pj: 11, goles: 33 },
-        { nombre: "Nico A", pj: 12, goles: 29 },
-        { nombre: "Richard", pj: 10, goles: 28 },
-        { nombre: "Seba R", pj: 9, goles: 22 },
-        { nombre: "Joaquín", pj: 10, goles: 22 },
-        { nombre: "Jorge dad", pj: 23, goles: 19 },
-        { nombre: "Bastian Caba", pj: 12, goles: 19 },
-        { nombre: "Tatin", pj: 8, goles: 17 },
-        { nombre: "Kevin", pj: 12, goles: 15 },
-        { nombre: "Hernán", pj: 7, goles: 15 },
-        { nombre: "Eddy", pj: 55, goles: 13 },
-        { nombre: "Nelson", pj: 35, goles: 13 },
-        { nombre: "Jere", pj: 5, goles: 13 },
-        { nombre: "Johan", pj: 13, goles: 13 },
-        { nombre: "José U", pj: 21, goles: 12 },
-        { nombre: "Rome", pj: 6, goles: 11 },
-        { nombre: "Cristóbal B", pj: 2, goles: 10 },
-        { nombre: "Eduardo U", pj: 20, goles: 10 },
-        { nombre: "Nico Badilla", pj: 4, goles: 9 },
-        { nombre: "Ruben", pj: 5, goles: 9 },
-        { nombre: "Benjamín", pj: 2, goles: 8 },
-        { nombre: "Seba", pj: 8, goles: 8 },
-        { nombre: "Luis Ibáñez", pj: 4, goles: 7 },
-        { nombre: "Vicho", pj: 2, goles: 7 },
-        { nombre: "Diego", pj: 3, goles: 7 },
-        { nombre: "Ariel", pj: 8, goles: 7 },
-        { nombre: "Daniel (Dani)", pj: 21, goles: 7 },
-        { nombre: "Rodrigo", pj: 3, goles: 6 },
-        { nombre: "Cristopher", pj: 2, goles: 6 },
-        { nombre: "Jonathan B", pj: 3, goles: 6 },
-        { nombre: "Angelo B", pj: 2, goles: 6 },
-        { nombre: "Invitado james", pj: 2, goles: 5 },
-        { nombre: "Camilo (Invitado Seba L)", pj: 1, goles: 5 },
-        { nombre: "Invitado Rubén", pj: 1, goles: 4 },
-        { nombre: "adrian", pj: 2, goles: 3 },
-        { nombre: "Papá Joaquín", pj: 1, goles: 3 },
-        { nombre: "Vargas", pj: 1, goles: 3 },
-        { nombre: "Ulises", pj: 1, goles: 3 },
-        { nombre: "Mauricio", pj: 1, goles: 3 },
-        { nombre: "Alan", pj: 1, goles: 2 },
-        { nombre: "Yansa", pj: 1, goles: 2 },
-        { nombre: "José M", pj: 9, goles: 2 },
-        { nombre: "Invitado Nico", pj: 1, goles: 2 },
-        { nombre: "Martina", pj: 1, goles: 2 },
-        { nombre: "Pato dad", pj: 20, goles: 2 },
-        { nombre: "Rubens (invitado)", pj: 2, goles: 1 },
-        { nombre: "Titin", pj: 2, goles: 1 },
-        { nombre: "Yasna", pj: 1, goles: 1 },
-        { nombre: "Riki", pj: 1, goles: 1 },
-        { nombre: "José A (Invitado Seba L)", pj: 1, goles: 1 },
-        { nombre: "Alejo", pj: 7, goles: 1 },
-        { nombre: "Gonzalo", pj: 4, goles: 0 },
-        { nombre: "Daniel (invitado)", pj: 2, goles: 0 },
-        { nombre: "Cubo", pj: 1, goles: 0 },
-        { nombre: "Amigo Jere", pj: 1, goles: 0 },
-        { nombre: "Franco L", pj: 1, goles: 0 },
-        { nombre: "Invitado", pj: 1, goles: 0 },
-        { nombre: "Felipe", pj: 1, goles: 0 },
-        { nombre: "Alejandro (Ale)", pj: 2, goles: 0 },
-        { nombre: "Ángelo (Invitado Seba)", pj: 1, goles: 0 },
-        { nombre: "Ponce", pj: 1, goles: 0 },
-        { nombre: "Raúl", pj: 1, goles: 0 },
-        { nombre: "Roro", pj: 1, goles: 0 },
-        { nombre: "Pato VA", pj: 1, goles: 0 },
-        { nombre: "Cristian invitado", pj: 1, goles: 0 },
-        { nombre: "Elias", pj: 1, goles: 0 },
-        { nombre: "Waldo", pj: 1, goles: 0 }
-      ],
-
-      arqueros: [
-        { nombre: "Bryan", pj: 12, golesContra: 92, puntaje: 88 },
-        { nombre: "Camilo", pj: 11, golesContra: 94, puntaje: 71 },
-        { nombre: "Stward M", pj: 11, golesContra: 94, puntaje: 58 },
-        { nombre: "Omar", pj: 10, golesContra: 118, puntaje: 32 },
-        { nombre: "Fabián", pj: 6, golesContra: 69, puntaje: 20 },
-        { nombre: "Hugo", pj: 2, golesContra: 20, puntaje: 10 },
-        { nombre: "Seba", pj: 1, golesContra: 5, puntaje: 10 },
-        { nombre: "Tobal", pj: 1, golesContra: 8, puntaje: 7 },
-        { nombre: "Ponce", pj: 1, golesContra: 8, puntaje: 7 },
-        { nombre: "Ivan", pj: 1, golesContra: 10, puntaje: 5 },
-        { nombre: "Camilo U", pj: 1, golesContra: 16, puntaje: -1 },
-        { nombre: "Eduardo U", pj: 3, golesContra: 49, puntaje: -4 }
-      ],
-
-      viejosCrack: [
-        { nombre: "Nelson", pj: 35, goles: 13 },
-        { nombre: "Jorge dad", pj: 23, goles: 19 },
-        { nombre: "Christian dad", pj: 21, goles: 34 },
-        { nombre: "Daniel (Dani)", pj: 21, goles: 7 },
-        { nombre: "Pato dad", pj: 20, goles: 2 },
-        { nombre: "Gonzalo", pj: 4, goles: 0 },
-        { nombre: "Papá Joaquín", pj: 1, goles: 3 }
-      ],
-
-      finanzas: [
-        { nombre: "Eddy", p2500: 0, p3000: 8, abono: 4000 },
-        { nombre: "Jorge dad", p2500: 0, p3000: 5, abono: 2500 },
-        { nombre: "Jorge", p2500: 0, p3000: 5, abono: 2500 },
-        { nombre: "Máximo", p2500: 0, p3000: 4, abono: 2000 },
-        { nombre: "Miguel", p2500: 0, p3000: 4, abono: 2000 },
-        { nombre: "Angelo G", p2500: 0, p3000: 4, abono: 2000 },
-        { nombre: "Willy", p2500: 0, p3000: 4, abono: 2000 },
-        { nombre: "Nico VA", p2500: 0, p3000: 3, abono: 1500 },
-        { nombre: "Omar", p2500: 0, p3000: 3, abono: 1500 },
-        { nombre: "Gonzalo", p2500: 0, p3000: 3, abono: 1500 },
-        { nombre: "Tatin", p2500: 0, p3000: 2, abono: 1000 },
-        { nombre: "Nelson", p2500: 1, p3000: 2, abono: 1000 },
-        { nombre: "Dani", p2500: 0, p3000: 2, abono: 1000 },
-        { nombre: "José U", p2500: 0, p3000: 2, abono: 1000 },
-        { nombre: "Cristian", p2500: 0, p3000: 2, abono: 1000 },
-        { nombre: "Pato dad", p2500: 0, p3000: 1, abono: 500 },
-        { nombre: "Seba L", p2500: 6, p3000: 1, abono: 500 },
-        { nombre: "Juan", p2500: 6, p3000: 0, abono: 0 },
-        { nombre: "Ivan", p2500: 6, p3000: 0, abono: 0 },
-        { nombre: "Alejo", p2500: 3, p3000: 0, abono: 0 },
-        { nombre: "James", p2500: 3, p3000: 0, abono: 0 },
-        { nombre: "Bastian Caba", p2500: 3, p3000: 0, abono: 0 },
-        { nombre: "Johan", p2500: 3, p3000: 0, abono: 0 },
-        { nombre: "Jere", p2500: 3, p3000: 0, abono: 0 },
-        { nombre: "Hernán", p2500: 2, p3000: 0, abono: 0 },
-        { nombre: "Franco L", p2500: 2, p3000: 0, abono: 0 },
-        { nombre: "Angelo B", p2500: 2, p3000: 0, abono: 0 },
-        { nombre: "Rubens (invitado)", p2500: 2, p3000: 0, abono: 0 },
-        { nombre: "Daniel (invitado)", p2500: 2, p3000: 0, abono: 0 },
-        { nombre: "Joaquín", p2500: 1, p3000: 0, abono: 0 },
-        { nombre: "Richard", p2500: 1, p3000: 0, abono: 0 },
-        { nombre: "Cristóbal B", p2500: 1, p3000: 0, abono: 0 },
-        { nombre: "Yasna", p2500: 1, p3000: 0, abono: 0 },
-        { nombre: "Camilo", p2500: 1, p3000: 0, abono: 0 },
-        { nombre: "Benja", p2500: 1, p3000: 0, abono: 0 },
-        { nombre: "Diego", p2500: 2, p3000: 0, abono: 0 },
-        { nombre: "Nico A", p2500: 1, p3000: 0, abono: 0 },
-        { nombre: "Invitado james", p2500: 1, p3000: 0, abono: 0 },
-        { nombre: "Hugo", p2500: 1, p3000: 0, abono: 0 },
-        { nombre: "Titin", p2500: 1, p3000: 0, abono: 0 },
-        { nombre: "Seba R", p2500: 1, p3000: 0, abono: 0 },
-        { nombre: "Cubo", p2500: 1, p3000: 0, abono: 0 },
-        { nombre: "Kevin", p2500: 1, p3000: 0, abono: 0 },
-        { nombre: "Vicho", p2500: 1, p3000: 0, abono: 0 },
-        { nombre: "Luis Ibáñez", p2500: 1, p3000: 0, abono: 0 }
-      ]
-    };
-
-    // =========================================================================
-    // ⚙️ LÓGICA DEL DASHBOARD (NO NECESITAS TOCAR NADA DE AQUÍ HACIA ABAJO)
-    // =========================================================================
-    let currentTab = "goleadores";
-    let searchQuery = "";
-
-    const formatCLP = (num) => "$" + num.toLocaleString("es-CL");
-
-    function initDashboard() {
-      document.getElementById("header-subtitle").textContent = DASHBOARD_DATA.tituloFecha;
-
-      // Ordenar y calcular líderes
-      const sortedScorers = [...DASHBOARD_DATA.goleadores].sort((a, b) => b.goles - a.goles || a.pj - b.pj);
-      const sortedGKs = [...DASHBOARD_DATA.arqueros].sort((a, b) => b.puntaje - a.puntaje);
-      const sortedVC = [...DASHBOARD_DATA.viejosCrack]
-        .map(p => ({ ...p, puntaje: p.pj * 5 + p.goles * 0.5 }))
-        .sort((a, b) => b.puntaje - a.puntaje);
-
-      if (sortedScorers.length) {
-        document.getElementById("leader-scorer-name").textContent = sortedScorers[0].nombre;
-        document.getElementById("leader-scorer-stat").textContent = `${sortedScorers[0].goles} Goles Totales`;
-      }
-      if (sortedGKs.length) {
-        document.getElementById("leader-gk-name").textContent = sortedGKs[0].nombre;
-        document.getElementById("leader-gk-stat").textContent = `${sortedGKs[0].puntaje} Puntos Anuales`;
-      }
-      if (sortedVC.length) {
-        document.getElementById("leader-vc-name").textContent = sortedVC[0].nombre;
-        document.getElementById("leader-vc-stat").textContent = `${sortedVC[0].puntaje.toFixed(1)} Puntos`;
-      }
-
-      renderTable();
-    }
-
-    function getRankBadge(index) {
-      if (index === 0) return `<span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xs border border-amber-500/40">1</span>`;
-      if (index === 1) return `<span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-zinc-400/20 text-zinc-300 font-bold text-xs border border-zinc-400/40">2</span>`;
-      if (index === 2) return `<span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-orange-700/30 text-orange-400 font-bold text-xs border border-orange-600/40">3</span>`;
-      return `<span class="text-zinc-500 font-mono text-xs pl-2">${index + 1}</span>`;
-    }
-
-    function renderTable() {
-      const thead = document.getElementById("table-head");
-      const tbody = document.getElementById("table-body");
-      const formulaEl = document.getElementById("table-formula");
-      const countEl = document.getElementById("table-count");
-
-      const filterFn = (item) => item.nombre.toLowerCase().includes(searchQuery.toLowerCase());
-
-      if (currentTab === "goleadores") {
-        const list = [...DASHBOARD_DATA.goleadores]
-          .sort((a, b) => b.goles - a.goles || a.pj - b.pj)
-          .map((item, idx) => ({ ...item, rank: idx }))
-          .filter(filterFn);
-
-        formulaEl.textContent = "Ranking ordenado por Goles Totales • Promedio = Goles / Partidos Jugados";
-        countEl.textContent = `${list.length} jugadores`;
-
-        thead.innerHTML = `
-          <tr>
-            <th class="py-3 px-4 w-14">#</th>
-            <th class="py-3 px-4">Jugador</th>
-            <th class="py-3 px-4 text-right">PJ</th>
-            <th class="py-3 px-4 text-right">Goles</th>
-            <th class="py-3 px-4 text-right">Promedio</th>
-          </tr>`;
-
-        tbody.innerHTML = list.map(p => {
-          const prom = p.pj > 0 ? (p.goles / p.pj).toFixed(2) : "0.00";
-          return `
-            <tr class="hover:bg-zinc-800/40 transition">
-              <td class="py-3 px-4">${getRankBadge(p.rank)}</td>
-              <td class="py-3 px-4 font-medium text-zinc-100">${p.nombre}</td>
-              <td class="py-3 px-4 text-right text-zinc-400">${p.pj}</td>
-              <td class="py-3 px-4 text-right font-bold text-emerald-400">${p.goles}</td>
-              <td class="py-3 px-4 text-right text-zinc-300 font-mono text-xs">${prom}</td>
-            </tr>`;
-        }).join("");
-
-      } else if (currentTab === "arqueros") {
-        const list = [...DASHBOARD_DATA.arqueros]
-          .sort((a, b) => b.puntaje - a.puntaje)
-          .map((item, idx) => ({ ...item, rank: idx }))
-          .filter(filterFn);
-
-        formulaEl.textContent = "Fórmula: 15 puntos base menos los goles recibidos en cada fecha";
-        countEl.textContent = `${list.length} arqueros`;
-
-        thead.innerHTML = `
-          <tr>
-            <th class="py-3 px-4 w-14">#</th>
-            <th class="py-3 px-4">Arquero</th>
-            <th class="py-3 px-4 text-right">PJ</th>
-            <th class="py-3 px-4 text-right">Goles Contra</th>
-            <th class="py-3 px-4 text-right">Prom. GC</th>
-            <th class="py-3 px-4 text-right">Puntaje Anual</th>
-          </tr>`;
-
-        tbody.innerHTML = list.map(p => {
-          const prom = p.pj > 0 ? (p.golesContra / p.pj).toFixed(2) : "0.00";
-          const ptsColor = p.puntaje >= 0 ? "text-sky-400" : "text-rose-400";
-          return `
-            <tr class="hover:bg-zinc-800/40 transition">
-              <td class="py-3 px-4">${getRankBadge(p.rank)}</td>
-              <td class="py-3 px-4 font-medium text-zinc-100">${p.nombre}</td>
-              <td class="py-3 px-4 text-right text-zinc-400">${p.pj}</td>
-              <td class="py-3 px-4 text-right text-zinc-300">${p.golesContra}</td>
-              <td class="py-3 px-4 text-right text-zinc-400 font-mono text-xs">${prom}</td>
-              <td class="py-3 px-4 text-right font-bold ${ptsColor}">${p.puntaje}</td>
-            </tr>`;
-        }).join("");
-
-      } else if (currentTab === "viejosCrack") {
-        const list = [...DASHBOARD_DATA.viejosCrack]
-          .map(p => ({ ...p, puntaje: p.pj * 5 + p.goles * 0.5 }))
-          .sort((a, b) => b.puntaje - a.puntaje)
-          .map((item, idx) => ({ ...item, rank: idx }))
-          .filter(filterFn);
-
-        formulaEl.textContent = "Fórmula: (Partidos Jugados × 5 pts) + (Goles Anotados × 0.5 pts)";
-        countEl.textContent = `${list.length} jugadores`;
-
-        thead.innerHTML = `
-          <tr>
-            <th class="py-3 px-4 w-14">#</th>
-            <th class="py-3 px-4">Jugador</th>
-            <th class="py-3 px-4 text-right">PJ (×5)</th>
-            <th class="py-3 px-4 text-right">Goles (×0.5)</th>
-            <th class="py-3 px-4 text-right">Puntaje Total</th>
-          </tr>`;
-
-        tbody.innerHTML = list.map(p => `
-          <tr class="hover:bg-zinc-800/40 transition">
-            <td class="py-3 px-4">${getRankBadge(p.rank)}</td>
-            <td class="py-3 px-4 font-medium text-zinc-100">${p.nombre}</td>
-            <td class="py-3 px-4 text-right text-zinc-400">${p.pj}</td>
-            <td class="py-3 px-4 text-right text-zinc-300">${p.goles}</td>
-            <td class="py-3 px-4 text-right font-bold text-amber-400">${p.puntaje.toFixed(1)}</td>
-          </tr>`
-        ).join("");
-
-      } else if (currentTab === "finanzas") {
-        const list = DASHBOARD_DATA.finanzas.filter(filterFn);
-        const totalAbonos = list.reduce((acc, item) => acc + item.abono, 0);
-
-        formulaEl.textContent = `Registro de partidos pendientes y abonos • Total abonos visibles: ${formatCLP(totalAbonos)}`;
-        countEl.textContent = `${list.length} registros`;
-
-        thead.innerHTML = `
-          <tr>
-            <th class="py-3 px-4">Jugador</th>
-            <th class="py-3 px-4 text-right">Partidos $2.500</th>
-            <th class="py-3 px-4 text-right">Partidos $3.000</th>
-            <th class="py-3 px-4 text-right">Abono Aportado</th>
-          </tr>`;
-
-        tbody.innerHTML = list.map(p => {
-          const abonoClass = p.abono > 0 ? "text-emerald-400 font-semibold" : "text-zinc-500";
-          return `
-            <tr class="hover:bg-zinc-800/40 transition">
-              <td class="py-3 px-4 font-medium text-zinc-100">${p.nombre}</td>
-              <td class="py-3 px-4 text-right ${p.p2500 > 0 ? 'text-amber-300 font-medium' : 'text-zinc-600'}">${p.p2500}</td>
-              <td class="py-3 px-4 text-right ${p.p3000 > 0 ? 'text-rose-300 font-medium' : 'text-zinc-600'}">${p.p3000}</td>
-              <td class="py-3 px-4 text-right ${abonoClass}">${formatCLP(p.abono)}</td>
-            </tr>`;
-        }).join("");
-      }
-    }
-
-    // Eventos de pestañas
-    document.querySelectorAll(".tab-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        currentTab = btn.dataset.tab;
-        document.querySelectorAll(".tab-btn").forEach(b => {
-          b.className = "tab-btn px-4 py-2 rounded-lg text-sm font-semibold bg-zinc-900 text-zinc-400 border border-zinc-800 hover:text-zinc-200 transition";
-        });
-        btn.className = "tab-btn px-4 py-2 rounded-lg text-sm font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 transition";
-        renderTable();
-      });
-    });
-
-    // Evento de búsqueda
-    document.getElementById("search-input").addEventListener("input", (e) => {
-      searchQuery = e.target.value;
-      renderTable();
-    });
-
-    initDashboard();
-  </script>
+  <!-- LÓGICA PRINCIPAL -->
+  <script src="js/app.js"></script>
 </body>
 </html>
