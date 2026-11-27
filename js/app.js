@@ -3,9 +3,16 @@ const TEMPORADAS_DISPONIBLES = [
   { id: "2026", label: "2026" }
 ];
 
+// Playlist general de YouTube del club
+const PLAYLIST_YOUTUBE = {
+  id: "PLrKduBkqmuzy4Q9sSSO1Y8DGqEcTFsvPe",
+  url: "https://youtube.com/playlist?list=PLrKduBkqmuzy4Q9sSSO1Y8DGqEcTFsvPe"
+};
+
 let currentSeason = TEMPORADAS_DISPONIBLES[0].id;
 let currentTab = "goleadores";
 let searchQuery = "";
+let playlistInitialized = false;
 
 const formatCLP = (num) => "$" + num.toLocaleString("es-CL");
 
@@ -13,7 +20,6 @@ function getActiveData() {
   return window.SEASON_DATA?.[currentSeason] || {
     anio: currentSeason,
     tituloFecha: `Temporada ${currentSeason} • Sin datos cargados`,
-    playlistId: "",
     goleadores: [],
     arqueros: [],
     viejosCrack: [],
@@ -192,39 +198,26 @@ function renderTable() {
   }
 }
 
-function renderVideos(data) {
+function renderVideos() {
   const iframe = document.getElementById("youtube-iframe");
-  const wrapper = document.getElementById("video-player-wrapper");
-  const emptyMsg = document.getElementById("video-empty-msg");
   const extLink = document.getElementById("youtube-external-link");
-  const seasonLabel = document.getElementById("video-season-label");
 
-  seasonLabel.textContent = `Temporada ${data.anio} • Usa el menú superior derecho del reproductor para elegir partido`;
+  extLink.href = PLAYLIST_YOUTUBE.url;
 
-  const cleanId = (data.playlistId || "").trim();
-  if (!cleanId) {
-    iframe.src = "";
-    wrapper.classList.add("hidden");
-    emptyMsg.classList.remove("hidden");
-    extLink.href = "https://www.youtube.com";
-    return;
+  if (!playlistInitialized) {
+    iframe.src = `https://www.youtube.com/embed/videoseries?list=${encodeURIComponent(PLAYLIST_YOUTUBE.id)}`;
+    playlistInitialized = true;
   }
-
-  wrapper.classList.remove("hidden");
-  emptyMsg.classList.add("hidden");
-  iframe.src = `https://www.youtube.com/embed/videoseries?list=${encodeURIComponent(cleanId)}`;
-  extLink.href = `https://www.youtube.com/playlist?list=${encodeURIComponent(cleanId)}`;
 }
 
 function updateActiveView() {
-  const data = getActiveData();
   const tableSection = document.getElementById("table-section");
   const videosSection = document.getElementById("videos-section");
 
   if (currentTab === "videos") {
     tableSection.classList.add("hidden");
     videosSection.classList.remove("hidden");
-    renderVideos(data);
+    renderVideos();
   } else {
     videosSection.classList.add("hidden");
     tableSection.classList.remove("hidden");
