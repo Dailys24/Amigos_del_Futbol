@@ -16,6 +16,14 @@ let playlistInitialized = false;
 
 const formatCLP = (num) => "$" + num.toLocaleString("es-CL");
 
+function escapeHtml(str) {
+  return String(str || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
+
 function getActiveData() {
   return window.SEASON_DATA?.[currentSeason] || {
     anio: currentSeason,
@@ -210,16 +218,97 @@ function renderVideos() {
   }
 }
 
+function openPhotoModal(src, fecha, titulo) {
+  const modal = document.getElementById("photo-modal");
+  document.getElementById("modal-photo-img").src = src;
+  document.getElementById("modal-photo-img").alt = titulo || fecha || "Foto del club";
+  document.getElementById("modal-photo-date").textContent = fecha || "Sin fecha";
+  document.getElementById("modal-photo-title").textContent = titulo || "Foto del Club";
+  modal.classList.remove("hidden");
+}
+
+function closePhotoModal() {
+  const modal = document.getElementById("photo-modal");
+  modal.classList.add("hidden");
+  document.getElementById("modal-photo-img").src = "";
+}
+
+function renderPhotos() {
+  const grid = document.getElementById("photos-grid");
+  const emptyMsg = document.getElementById("photos-empty-msg");
+  const countEl = document.getElementById("photos-count");
+
+  const allPhotos = Array.isArray(window.CLUB_PHOTOS) ? window.CLUB_PHOTOS : [];
+  const q = searchQuery.trim().toLowerCase();
+
+  const filtered = q
+    ? allPhotos.filter(item =>
+        (item.fecha || "").toLowerCase().includes(q) ||
+        (item.titulo || "").toLowerCase().includes(q) ||
+        (item.archivo || "").toLowerCase().includes(q)
+      )
+    : allPhotos;
+
+  countEl.textContent = `${filtered.length} ${filtered.length === 1 ? "foto" : "fotos"}`;
+
+  if (filtered.length === 0) {
+    grid.innerHTML = "";
+    emptyMsg.classList.remove("hidden");
+    return;
+  }
+
+  emptyMsg.classList.add("hidden");
+  grid.innerHTML = filtered.map((item, idx) => {
+    const safeSrc = escapeHtml(item.archivo || "");
+    const safeFecha = escapeHtml(item.fecha || "Fecha por definir");
+    const safeTitulo = escapeHtml(item.titulo || `Foto #${idx + 1}`);
+
+    return `
+      <article
+        data-photo-src="${safeSrc}"
+        data-photo-date="${safeFecha}"
+        data-photo-title="${safeTitulo}"
+        class="photo-card group bg-zinc-950/80 border border-zinc-800 rounded-xl overflow-hidden hover:border-emerald-500/50 transition cursor-pointer flex flex-col"
+      >
+        <div class="aspect-video w-full bg-zinc-900 overflow-hidden">
+          <img
+            src="${safeSrc}"
+            alt="${safeTitulo}"
+            loading="lazy"
+            class="w-full h-full object-cover group-hover:scale-[1.02] transition duration-300"
+          />
+        </div>
+        <div class="p-3 flex items-center justify-between gap-2 border-t border-zinc-800/70">
+          <span class="text-xs font-bold text-emerald-400 whitespace-nowrap">📅 ${safeFecha}</span>
+          <span class="text-xs text-zinc-300 truncate">${safeTitulo}</span>
+        </div>
+      </article>
+    `;
+  }).join("");
+
+  grid.querySelectorAll(".photo-card").forEach(card => {
+    card.addEventListener("click", () => {
+      openPhotoModal(card.dataset.photoSrc, card.dataset.photoDate, card.dataset.photoTitle);
+    });
+  });
+}
+
 function updateActiveView() {
   const tableSection = document.getElementById("table-section");
   const videosSection = document.getElementById("videos-section");
+  const photosSection = document.getElementById("photos-section");
+
+  tableSection.classList.add("hidden");
+  videosSection.classList.add("hidden");
+  photosSection.classList.add("hidden");
 
   if (currentTab === "videos") {
-    tableSection.classList.add("hidden");
     videosSection.classList.remove("hidden");
     renderVideos();
+  } else if (currentTab === "fotos") {
+    photosSection.classList.remove("hidden");
+    renderPhotos();
   } else {
-    videosSection.classList.add("hidden");
     tableSection.classList.remove("hidden");
     renderTable();
   }
@@ -259,6 +348,11 @@ document.getElementById("search-input").addEventListener("input", (e) => {
     });
   }
   updateActiveView();
+});
+
+document.getElementById("close-photo-modal").addEventListener("click", closePhotoModal);
+document.getElementById("photo-modal").addEventListener("click", (e) => {
+  if (e.target.id === "photo-modal") closePhotoModal();
 });
 
 populateSeasonSelector();
