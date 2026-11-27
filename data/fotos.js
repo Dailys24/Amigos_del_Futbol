@@ -1,8 +1,11 @@
 window.CLUB_PHOTOS = [
-  // Ejemplo (borra o reemplaza cuando subas tus fotos a la carpeta fotos/):
-  // {
-  //   archivo: "fotos/fecha-55-equipo.jpg",
-  //   fecha: "21-11-2026",
-  //   titulo: "Equipo Negro vs. Equipo ROJO"
-  // }
+  "24-10-2026.jpeg",
+  "24-10-2026(2).jpeg",
+  "24-10-2026(3).jpeg",
+  "14-08-2026.jpeg",
+  "03-08-2026.jpeg",
+  "30-07-2026.jpeg",
+  "23-07-2026.jpeg",
+  "18-07-2026.jpeg",
+  "04-07-2026.jpeg"
 ];
