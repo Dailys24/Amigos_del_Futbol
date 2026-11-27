@@ -1,100 +1,4 @@
-<!DOCTYPE html>
-<html lang="es" class="dark">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Liga Futbolito — Estadísticas e Historial</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #09090b;
-      color: #f4f4f5;
-    }
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #18181b; }
-    ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #52525b; }
-  </style>
-</head>
-<body class="min-h-screen antialiased selection:bg-emerald-500/30 selection:text-emerald-200 flex flex-col">
-
-  <!-- HEADER -->
-  <header class="border-b border-zinc-800/80 bg-zinc-950/85 backdrop-blur-md sticky top-0 z-30">
-    <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
-      <div>
-        <div class="flex items-center gap-2.5">
-          <span class="inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500 shadow-[0_0_10px_#10b981]"></span>
-          <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight text-white">
-            LIGA FUTBOLITO
-          </h1>
-        </div>
-        <p id="header-subtitle" class="text-xs sm:text-sm text-zinc-400 mt-0.5"></p>
-      </div>
-
-      <!-- Controles: Selector de Año + Buscador -->
-      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
-        <div class="flex items-center gap-2 bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-1.5">
-          <label for="season-select" class="text-xs font-semibold uppercase tracking-wider text-zinc-400 whitespace-nowrap">
-            Año:
-          </label>
-          <select
-            id="season-select"
-            class="bg-transparent text-sm font-bold text-emerald-400 focus:outline-none cursor-pointer w-full sm:w-auto"
-          ></select>
-        </div>
-
-        <div class="relative w-full sm:w-64">
-          <input
-            id="search-input"
-            type="text"
-            placeholder="Buscar jugador..."
-            class="w-full bg-zinc-900 border border-zinc-800 rounded-lg pl-9 pr-3 py-2 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-emerald-500/70 focus:ring-1 focus:ring-emerald-500/50 transition"
-          />
-          <svg class="w-4 h-4 text-zinc-500 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1010.5 18a7.5 7.5 0 006.15-3.35z" />
-          </svg>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <!-- CONTENIDO PRINCIPAL -->
-  <main class="max-w-6xl w-full mx-auto px-4 py-6 space-y-6 flex-1">
-
-    <!-- TARJETAS DE LÍDERES -->
-    <section class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <div class="bg-zinc-900/70 border border-zinc-800 rounded-xl p-4">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-semibold uppercase tracking-wider text-zinc-400">Mejor Goleador</span>
-          <span class="text-lg">⚽</span>
-        </div>
-        <div id="leader-scorer-name" class="text-xl font-bold text-white mt-2">—</div>
-        <div id="leader-scorer-stat" class="text-sm font-medium text-emerald-400 mt-0.5">—</div>
-      </div>
-
-      <div class="bg-zinc-900/70 border border-zinc-800 rounded-xl p-4">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-semibold uppercase tracking-wider text-zinc-400">Mejor Arquero</span>
-          <span class="text-lg">🧤</span>
-        </div>
-        <div id="leader-gk-name" class="text-xl font-bold text-white mt-2">—</div>
-        <div id="leader-gk-stat" class="text-sm font-medium text-sky-400 mt-0.5">—</div>
-      </div>
-
-      <div class="bg-zinc-900/70 border border-zinc-800 rounded-xl p-4">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-semibold uppercase tracking-wider text-zinc-400">Mejor Viejo Crack</span>
-          <span class="text-lg">🎖️</span>
-        </div>
-        <div id="leader-vc-name" class="text-xl font-bold text-white mt-2">—</div>
-        <div id="leader-vc-stat" class="text-sm font-medium text-amber-400 mt-0.5">—</div>
-      </div>
-    </section>
-
-    <!-- NAVEGACIÓN DE PESTAÑAS (CON SCROLL HORIZONTAL EN MÓVIL) -->
+<!-- NAVEGACIÓN DE PESTAÑAS (CON SCROLL HORIZONTAL EN MÓVIL) -->
     <nav class="flex gap-2 overflow-x-auto pb-2 border-b border-zinc-800" id="tabs">
       <button data-tab="goleadores" class="tab-btn shrink-0 px-4 py-2 rounded-lg text-sm font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 transition">
         ⚽ Goleadores
@@ -108,10 +12,13 @@
       <button data-tab="finanzas" class="tab-btn shrink-0 px-4 py-2 rounded-lg text-sm font-semibold bg-zinc-900 text-zinc-400 border border-zinc-800 hover:text-zinc-200 transition">
         💰 Finanzas y Cancha
       </button>
+      <button data-tab="videos" class="tab-btn shrink-0 px-4 py-2 rounded-lg text-sm font-semibold bg-zinc-900 text-zinc-400 border border-zinc-800 hover:text-zinc-200 transition">
+        📺 Videos
+      </button>
     </nav>
 
     <!-- TABLA ACTIVA -->
-    <section class="bg-zinc-900/50 border border-zinc-800 rounded-xl overflow-hidden shadow-xl">
+    <section id="table-section" class="bg-zinc-900/50 border border-zinc-800 rounded-xl overflow-hidden shadow-xl">
       <div id="table-info" class="px-4 py-3 bg-zinc-900/90 border-b border-zinc-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs text-zinc-400">
         <span id="table-formula"></span>
         <span id="table-count" class="font-medium text-zinc-300"></span>
@@ -125,16 +32,39 @@
       </div>
     </section>
 
-  </main>
+    <!-- APARTADO DE VIDEOS (PLAYLIST DE YOUTUBE) -->
+    <section id="videos-section" class="hidden bg-zinc-900/50 border border-zinc-800 rounded-xl overflow-hidden shadow-xl">
+      <div class="px-4 py-3 bg-zinc-900/90 border-b border-zinc-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <div>
+          <h2 class="text-sm font-bold text-white">Partidos y Jugadas en YouTube</h2>
+          <p id="video-season-label" class="text-xs text-zinc-400"></p>
+        </div>
+        <a
+          id="youtube-external-link"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-rose-500/15 text-rose-400 border border-rose-500/30 hover:bg-rose-500/25 transition shrink-0"
+        >
+          <span>Abrir playlist en YouTube</span>
+          <span aria-hidden="true">↗</span>
+        </a>
+      </div>
 
-  <footer class="max-w-6xl w-full mx-auto px-4 py-6 text-center text-xs text-zinc-600">
-    Historial de Temporadas • Liga Futbolito
-  </footer>
-
-  <!-- ARCHIVOS DE DATOS POR AÑO (AGREGA AQUÍ 2027.js, 2028.js, ETC.) -->
-  <script src="data/2026.js"></script>
-
-  <!-- LÓGICA PRINCIPAL -->
-  <script src="js/app.js"></script>
-</body>
-</html>
+      <div class="p-4">
+        <div id="video-player-wrapper" class="aspect-video w-full rounded-xl overflow-hidden bg-zinc-950 border border-zinc-800">
+          <iframe
+            id="youtube-iframe"
+            class="w-full h-full"
+            title="Reproductor de playlist de partidos"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <p id="video-empty-msg" class="hidden py-10 text-center text-sm text-zinc-500">
+          Aún no hay una playlist de YouTube configurada para esta temporada.
+        </p>
+      </div>
+    </section>
