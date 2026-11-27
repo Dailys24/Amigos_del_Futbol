@@ -218,11 +218,24 @@ function renderVideos() {
   }
 }
 
+function parsePhotoItem(entry) {
+  const raw = typeof entry === "string" ? entry : (entry?.archivo || "");
+  const fileName = raw.split("/").pop();
+  const baseName = fileName.replace(/\.[^.]+$/, ""); // Quita .jpeg, .jpg, .png, etc.
+  const src = raw.includes("/") ? raw : `data/fotos/${raw}`;
+
+  return {
+    src,
+    baseName,
+    titulo: `Foto tomada el ${baseName}`
+  };
+}
+
 function openPhotoModal(src, fecha, titulo) {
   const modal = document.getElementById("photo-modal");
   document.getElementById("modal-photo-img").src = src;
-  document.getElementById("modal-photo-img").alt = titulo || fecha || "Foto del club";
-  document.getElementById("modal-photo-date").textContent = fecha || "Sin fecha";
+  document.getElementById("modal-photo-img").alt = titulo || "Foto del club";
+  document.getElementById("modal-photo-date").textContent = fecha || "";
   document.getElementById("modal-photo-title").textContent = titulo || "Foto del Club";
   modal.classList.remove("hidden");
 }
@@ -238,14 +251,13 @@ function renderPhotos() {
   const emptyMsg = document.getElementById("photos-empty-msg");
   const countEl = document.getElementById("photos-count");
 
-  const allPhotos = Array.isArray(window.CLUB_PHOTOS) ? window.CLUB_PHOTOS : [];
+  const allPhotos = (Array.isArray(window.CLUB_PHOTOS) ? window.CLUB_PHOTOS : []).map(parsePhotoItem);
   const q = searchQuery.trim().toLowerCase();
 
   const filtered = q
     ? allPhotos.filter(item =>
-        (item.fecha || "").toLowerCase().includes(q) ||
-        (item.titulo || "").toLowerCase().includes(q) ||
-        (item.archivo || "").toLowerCase().includes(q)
+        item.baseName.toLowerCase().includes(q) ||
+        item.titulo.toLowerCase().includes(q)
       )
     : allPhotos;
 
@@ -258,15 +270,15 @@ function renderPhotos() {
   }
 
   emptyMsg.classList.add("hidden");
-  grid.innerHTML = filtered.map((item, idx) => {
-    const safeSrc = escapeHtml(item.archivo || "");
-    const safeFecha = escapeHtml(item.fecha || "Fecha por definir");
-    const safeTitulo = escapeHtml(item.titulo || `Foto #${idx + 1}`);
+  grid.innerHTML = filtered.map(item => {
+    const safeSrc = escapeHtml(item.src);
+    const safeBase = escapeHtml(item.baseName);
+    const safeTitulo = escapeHtml(item.titulo);
 
     return `
       <article
         data-photo-src="${safeSrc}"
-        data-photo-date="${safeFecha}"
+        data-photo-date="${safeBase}"
         data-photo-title="${safeTitulo}"
         class="photo-card group bg-zinc-950/80 border border-zinc-800 rounded-xl overflow-hidden hover:border-emerald-500/50 transition cursor-pointer flex flex-col"
       >
@@ -278,9 +290,8 @@ function renderPhotos() {
             class="w-full h-full object-cover group-hover:scale-[1.02] transition duration-300"
           />
         </div>
-        <div class="p-3 flex items-center justify-between gap-2 border-t border-zinc-800/70">
-          <span class="text-xs font-bold text-emerald-400 whitespace-nowrap">📅 ${safeFecha}</span>
-          <span class="text-xs text-zinc-300 truncate">${safeTitulo}</span>
+        <div class="p-3 border-t border-zinc-800/70">
+          <p class="text-xs sm:text-sm font-semibold text-zinc-100 truncate">📸 ${safeTitulo}</p>
         </div>
       </article>
     `;
