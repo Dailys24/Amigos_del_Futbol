@@ -94,7 +94,7 @@
       </div>
     </section>
 
-    <!-- NAVEGACIÓN DE PESTAÑAS -->
+    <!-- NAVEGACIÓN DE PESTAÑAS (CON SCROLL HORIZONTAL EN MÓVIL) -->
     <nav class="flex gap-2 overflow-x-auto pb-2 border-b border-zinc-800" id="tabs">
       <button data-tab="goleadores" class="tab-btn shrink-0 px-4 py-2 rounded-lg text-sm font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 transition">
         ⚽ Goleadores
@@ -132,12 +132,12 @@
     <section id="videos-section" class="hidden bg-zinc-900/50 border border-zinc-800 rounded-xl overflow-hidden shadow-xl">
       <div class="px-4 py-3 bg-zinc-900/90 border-b border-zinc-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
         <div>
-          <h2 class="text-sm font-bold text-white">Partidos y Jugadas en YouTube</h2>
-          <p id="video-season-label" class="text-xs text-zinc-400"></p>
+          <h2 class="text-sm font-bold text-white">Videos del Club</h2>
+          <p class="text-xs text-zinc-400">Usa el menú superior derecho del reproductor para cambiar entre videos de la playlist</p>
         </div>
         <a
           id="youtube-external-link"
-          href="#"
+          href="https://youtube.com/playlist?list=PLrKduBkqmuzy4Q9sSSO1Y8DGqEcTFsvPe"
           target="_blank"
           rel="noopener noreferrer"
           class="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-rose-500/15 text-rose-400 border border-rose-500/30 hover:bg-rose-500/25 transition shrink-0"
@@ -148,20 +148,17 @@
       </div>
 
       <div class="p-4">
-        <div id="video-player-wrapper" class="aspect-video w-full rounded-xl overflow-hidden bg-zinc-950 border border-zinc-800">
+        <div class="aspect-video w-full rounded-xl overflow-hidden bg-zinc-950 border border-zinc-800">
           <iframe
             id="youtube-iframe"
             class="w-full h-full"
-            title="Reproductor de playlist de partidos"
+            title="Playlist de Videos del Club"
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerpolicy="strict-origin-when-cross-origin"
             allowfullscreen
           ></iframe>
         </div>
-        <p id="video-empty-msg" class="hidden py-10 text-center text-sm text-zinc-500">
-          Aún no hay una playlist de YouTube configurada para esta temporada.
-        </p>
       </div>
     </section>
 
@@ -171,7 +168,7 @@
     Historial de Temporadas • Liga Futbolito
   </footer>
 
-  <!-- ARCHIVOS DE DATOS POR AÑO -->
+  <!-- ARCHIVOS DE DATOS POR AÑO (AGREGA AQUÍ 2027.js, 2028.js, ETC.) -->
   <script src="data/2026.js"></script>
 
   <!-- LÓGICA PRINCIPAL -->
