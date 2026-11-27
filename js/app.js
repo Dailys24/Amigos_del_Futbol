@@ -13,6 +13,7 @@ function getActiveData() {
   return window.SEASON_DATA?.[currentSeason] || {
     anio: currentSeason,
     tituloFecha: `Temporada ${currentSeason} • Sin datos cargados`,
+    playlistId: "",
     goleadores: [],
     arqueros: [],
     viejosCrack: [],
@@ -191,11 +192,51 @@ function renderTable() {
   }
 }
 
+function renderVideos(data) {
+  const iframe = document.getElementById("youtube-iframe");
+  const wrapper = document.getElementById("video-player-wrapper");
+  const emptyMsg = document.getElementById("video-empty-msg");
+  const extLink = document.getElementById("youtube-external-link");
+  const seasonLabel = document.getElementById("video-season-label");
+
+  seasonLabel.textContent = `Temporada ${data.anio} • Usa el menú superior derecho del reproductor para elegir partido`;
+
+  const cleanId = (data.playlistId || "").trim();
+  if (!cleanId) {
+    iframe.src = "";
+    wrapper.classList.add("hidden");
+    emptyMsg.classList.remove("hidden");
+    extLink.href = "https://www.youtube.com";
+    return;
+  }
+
+  wrapper.classList.remove("hidden");
+  emptyMsg.classList.add("hidden");
+  iframe.src = `https://www.youtube.com/embed/videoseries?list=${encodeURIComponent(cleanId)}`;
+  extLink.href = `https://www.youtube.com/playlist?list=${encodeURIComponent(cleanId)}`;
+}
+
+function updateActiveView() {
+  const data = getActiveData();
+  const tableSection = document.getElementById("table-section");
+  const videosSection = document.getElementById("videos-section");
+
+  if (currentTab === "videos") {
+    tableSection.classList.add("hidden");
+    videosSection.classList.remove("hidden");
+    renderVideos(data);
+  } else {
+    videosSection.classList.add("hidden");
+    tableSection.classList.remove("hidden");
+    renderTable();
+  }
+}
+
 function renderSeason() {
   const data = getActiveData();
   document.getElementById("header-subtitle").textContent = data.tituloFecha;
   updateLeaders(data);
-  renderTable();
+  updateActiveView();
 }
 
 document.getElementById("season-select").addEventListener("change", (e) => {
@@ -210,13 +251,21 @@ document.querySelectorAll(".tab-btn").forEach(btn => {
       b.className = "tab-btn shrink-0 px-4 py-2 rounded-lg text-sm font-semibold bg-zinc-900 text-zinc-400 border border-zinc-800 hover:text-zinc-200 transition";
     });
     btn.className = "tab-btn shrink-0 px-4 py-2 rounded-lg text-sm font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 transition";
-    renderTable();
+    updateActiveView();
   });
 });
 
 document.getElementById("search-input").addEventListener("input", (e) => {
   searchQuery = e.target.value;
-  renderTable();
+  if (currentTab === "videos" && searchQuery.trim()) {
+    currentTab = "goleadores";
+    document.querySelectorAll(".tab-btn").forEach(b => {
+      b.className = b.dataset.tab === "goleadores"
+        ? "tab-btn shrink-0 px-4 py-2 rounded-lg text-sm font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 transition"
+        : "tab-btn shrink-0 px-4 py-2 rounded-lg text-sm font-semibold bg-zinc-900 text-zinc-400 border border-zinc-800 hover:text-zinc-200 transition";
+    });
+  }
+  updateActiveView();
 });
 
 populateSeasonSelector();
