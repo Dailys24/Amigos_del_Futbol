@@ -103,11 +103,14 @@ window.SEASON_DATA["2026"] = {
   ],
 
   viejosCrack: [
+    { nombre: "Miguel", pj: 34, goles: 44 },
     { nombre: "Nelson", pj: 35, goles: 13 },
     { nombre: "Jorge dad", pj: 24, goles: 22 },
     { nombre: "Christian dad", pj: 21, goles: 34 },
+    { nombre: "José U", pj: 22, goles: 12 },
     { nombre: "Daniel (Dani)", pj: 21, goles: 7 },
     { nombre: "Pato dad", pj: 21, goles: 2 },
+    { nombre: "Richard", pj: 10, goles: 28 },
     { nombre: "Gonzalo", pj: 4, goles: 0 },
     { nombre: "Papá Joaquín", pj: 1, goles: 3 }
   ],
