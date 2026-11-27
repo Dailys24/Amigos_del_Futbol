@@ -3,6 +3,7 @@ window.SEASON_DATA = window.SEASON_DATA || {};
 window.SEASON_DATA["2026"] = {
   anio: "2026",
   tituloFecha: "Temporada 2026 • Fecha 55: Equipo Negro (Juventud) vs. Equipo ROJO (Experiencia)",
+  playlistId: " https://youtube.com/playlist?list=PLrKduBkqmuzy4Q9sSSO1Y8DGqEcTFsvPe&si=Ppp12BcxXpVFFFg1",
 
   goleadores: [
     { nombre: "Angelo G", pj: 30, goles: 127 },
